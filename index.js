@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const fs = require("fs");
-const { green, red } = require("chalk");
+const { green, red, inverse } = require("chalk");
 
 const test = [
   [
@@ -64,13 +64,17 @@ const runner = async (data) =>
 
     input.pipe(hash).setEncoding("hex");
     hash.on("data", (chunk) => (hashes[filename] += chunk));
-    hash.on("end", () =>
+    hash.on("end", () => {
+      const isChanged = csum !== hashes[filename];
+      const recap = isChanged ? red`[Changed!]` : green`[Ok]`;
+      const hightlight = (name) => inverse((isChanged ? red : green)(name));
+
       console.log(
-        `${idx + 1}. ${filename}: `,
-        hashes[filename],
-        csum === hashes[filename] ? green`[Ok]` : red`[Changed!]`
-      )
-    );
+        `${String(idx + 1).padStart(2, "0")}. File: "${hightlight(filename)}":
+    Cheksum: ${hashes[filename]} ${recap}
+    `
+      );
+    });
   });
 
 runner(test).catch((err) => console.error(err));
