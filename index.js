@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const fs = require("fs");
+const { green, red } = require("chalk");
 
 const test = [
   [
@@ -67,7 +68,7 @@ const runner = async (data) =>
       console.log(
         `${idx + 1}. ${filename}: `,
         hashes[filename],
-        csum === hashes[filename] ? "[Ok]" : "[Wrong]"
+        csum === hashes[filename] ? green`[Ok]` : red`[Changed!]`
       )
     );
   });
