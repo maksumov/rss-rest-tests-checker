@@ -1,5 +1,7 @@
 const crypto = require("crypto");
 const fs = require("fs");
+const path = require("path");
+
 const { green, red, inverse } = require("chalk");
 
 const test = [
@@ -54,12 +56,15 @@ const test = [
 ];
 
 const hashes = [];
+const root = process.argv[2] || "../../..";
 
 const runner = async (data) =>
   data.map((file, idx) => {
     const [filename, csum] = file;
     const hash = crypto.createHash("sha256");
-    const input = fs.createReadStream(filename).setEncoding("hex");
+    const input = fs
+      .createReadStream(path.resolve(root, filename))
+      .setEncoding("hex");
     hashes[filename] = "";
 
     input.pipe(hash).setEncoding("hex");

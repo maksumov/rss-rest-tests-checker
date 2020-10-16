@@ -1,6 +1,6 @@
 {
   "name": "@maksumov/rss-rest-tests-checker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple tool for checking that the test files remained unchanged for the REST service task within Rolling Scopes School Node.js development course",
   "main": "index.js",
   "scripts": {
