@@ -14,5 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/maksumov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:maksumov/rss-rest-tests-checker.git"
   }
 }
