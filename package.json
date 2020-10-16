@@ -1,7 +1,7 @@
 {
   "name": "@maksumov/rss-rest-tests-checker",
   "version": "1.0.0",
-  "description": "A simple tool to verify that the test files in the same form for the REST service task within the Rolling Scopes School Node.js development course.",
+  "description": "A simple tool for checking that the test files remained unchanged for the REST service task within Rolling Scopes School Node.js development course",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -11,5 +11,8 @@
     "node"
   ],
   "author": "Marat Maksumov",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0"
+  }
 }
