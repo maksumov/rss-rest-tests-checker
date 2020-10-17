@@ -9,4 +9,14 @@ A simple tool for checking that the test files remained unchanged for the [RS Sc
 
 ## Usage
 
-For starting check just run `npm explore @maksumov/rss-rest-tests-checker -- npm start` at the root of cross-checking project.
+For starting check just run
+
+```bash
+npm explore @maksumov/rss-rest-tests-checker -- npm start
+```
+
+You can also use an optional argument to specify the location of the test folder. Example for the case when the folder with tests is located in the current folder:
+
+```bash
+npm explore @maksumov/rss-rest-tests-checker -- npm start .
+```

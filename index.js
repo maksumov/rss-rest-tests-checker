@@ -76,7 +76,7 @@ const check = (file) =>
       const hightlight = (name) => inverse((isChanged ? red : green)(name));
 
       resolve(`File: "${hightlight(filename)}":
-    Cheksum: ${checksum} ${recap}
+    Checksum: ${checksum} ${recap}
     `);
     });
   });
