@@ -55,31 +55,49 @@ const test = [
   ],
 ];
 
-const hashes = [];
 const root = process.argv[2] || "../../..";
 
-const runner = async (data) =>
-  data.map((file, idx) => {
+const check = (file) =>
+  new Promise((resolve, reject) => {
     const [filename, csum] = file;
     const hash = crypto.createHash("sha256");
-    const input = fs
-      .createReadStream(path.resolve(root, filename))
-      .setEncoding("hex");
-    hashes[filename] = "";
+
+    const input = fs.createReadStream(path.resolve(root, filename));
+    input.on("error", (err) => reject(err)).setEncoding("hex");
 
     input.pipe(hash).setEncoding("hex");
-    hash.on("data", (chunk) => (hashes[filename] += chunk));
+
+    let checksum = "";
+
+    hash.on("data", (chunk) => (checksum += chunk));
     hash.on("end", () => {
-      const isChanged = csum !== hashes[filename];
+      const isChanged = csum !== checksum;
       const recap = isChanged ? red`[Changed!]` : green`[Ok]`;
       const hightlight = (name) => inverse((isChanged ? red : green)(name));
 
-      console.log(
-        `${String(idx + 1).padStart(2, "0")}. File: "${hightlight(filename)}":
-    Cheksum: ${hashes[filename]} ${recap}
-    `
-      );
+      resolve(`File: "${hightlight(filename)}":
+    Cheksum: ${checksum} ${recap}
+    `);
     });
   });
 
-runner(test).catch((err) => console.error(err));
+const runner = async (data) =>
+  Promise.all(data.map((file) => check(file)))
+    // Add formatted line number
+    .then((lines) =>
+      lines.map((val, idx) => `${String(idx + 1).padStart(2, "0")}. ${val}`)
+    )
+    // Print result to console
+    .then((linesWithId) => linesWithId.forEach((line) => console.log(line)));
+
+runner(test)
+  // Errors handler
+  .catch((err) =>
+    console.error(
+      err.code === "ENOENT"
+        ? red`File '${err.path}' doesn't exist!`
+        : err.code === "EPERM"
+        ? red`No permissions to open file '${err.path}'!`
+        : red(JSON.stringify(err, null, 2))
+    )
+  );
